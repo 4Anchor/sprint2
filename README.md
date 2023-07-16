@@ -12,22 +12,22 @@ kubectl create namespace django-app
 kubernetes create pod busybox.yaml -n monitoring
 ```
 
-## Для начала первым этапом донастроим наш gitlab-runner (srv-0) для взаимодействия с Gitlab CI/CD и Kybernetes кластером.
+## Для начала первым этапом до настроим наш gitlab-runner (srv-0) для взаимодействия с Gitlab CI/CD и Kybernetes кластером.
 
-### 1. Проинициализируем наш gitlab-runner:
+### 1. Про инициализируем наш gitlab-runner:
 - Перейдем в Settings - CI/CD Settings - Runners и так как gitlab-runner уже был развернут в 1м спринте, то остается только инициализация командой :
 
 ```
 sudo gitlab-runner register --url https://anchor.gitlab.yandexcloud.net/ --registration-token $REGISTRATION_TOKEN
 ```
-REGISTRATION_TOKEN - yнаходится в Runners - Project runners
+REGISTRATION_TOKEN - Находится в Runners - Project runners
 
 При регистрации все шаги можно оставить по умолчанию, требуется выбрать только: executor shell
 
 
-В доступных раннерах (Assigned project runners) должен появиться и быть активен раннер.
+В доступных раннерах (Assigned project runners) должен появиться и быть активен ранер.
 
-### 2. Так как gitlab-runner в пайплайне будет использовать shell команды и бидлить докер образы, то ему надо дать права на использование docker service, на хосте srv-o.
+### 2. Так как gitlab-runner в пайплайне будет использовать shell команды и билдлить докер образ, то ему необходимо дать права на использование docker service, на хосте srv-o.
 Выполните команду:
 ```
 sudo usermod -aG docker gitlab-runner
@@ -80,14 +80,14 @@ deploy:
     - tags
 ```
  - На шаге build будет происходить сборка Docker image из каталога ./app с последующей его отправкой в Docker registry (docker.io)
-   - В Variables надо добавить 2ве переменные с авторизационными данными в Docker registry:
+   - В Variables надо добавить 2ве переменные с данными авторизации в Docker registry:
    ```
    CI_REGISTRY_PASSWORD
    CI_REGISTRY_USER
    ```
    - DOCKER_REGISTRY_TAG будет автоматически браться из вашего GitLab проекта и передаваться как в Registry так и в Helm chart.
 
- - На шаге deploy будет происходить helm --install если такой проект не разу не инсталировался еще в Kybernetes кластер или helm upgrade  если проект уже есть, и вы пытаетесь изменить один из манифестов или параметров.
+ - На шаге deploy будет происходить helm --install если такой проект не разу не инсталлировался еще в Kybernetes кластер или helm upgrade  если проект уже есть, и вы пытаетесь изменить один из манифестов или параметров.
 ```
 helm upgrade --install myapp $CHART_PATH -n django-app --set app.image.repository=$DOCKER_REGISTRY_IMAGE,image.tag=$CI_COMMIT_TAG
 ```
@@ -97,7 +97,7 @@ helm upgrade --install myapp $CHART_PATH -n django-app --set app.image.repositor
 Сам Helm chart является почти базовым, деплоится через kind: Deployment, имеет в себе values.yaml и секреты вынесены в отдельный kind: Secret.
 Ingress манифест добавлен но для работы сервиса не используется.
 
-### Этам донастройки для работы сервиса Django 
+### Этам до настройки для работы сервиса Django 
 
 ```
 kubectl get pods -n django-app
@@ -126,7 +126,7 @@ storageClass: local-storage
 ```
 В соответствии с вашими параметрами Helm chart описанными в django-app
 
-#### Так же для корректно деплоя и запуска PostgreSQL требуется предварительно создать storageClass с название local-storage. Все дополнительный компоненты  и манифесты содержаться в репозитра и доступны по адресу: https://github.com/4Anchor/components.git
+#### Так же для корректно деплоя и запуска PostgreSQL требуется предварительно создать storageClass с название local-storage. Все дополнительный компоненты  и манифесты содержаться в репозитории и доступны по адресу: https://github.com/4Anchor/components.git
 
 Требуется скачать репозиторий, перейти в него и выполнить команды.
 
