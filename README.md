@@ -97,12 +97,12 @@ helm upgrade --install myapp $CHART_PATH -n django-app --set app.image.repositor
 Сам Helm chart является почти базовым, деплоится через kind: Deployment, имеет в себе values.yaml и секреты вынесены в отдельный kind: Secret.
 Ingress манифест добавлен но для работы сервиса не используется.
 
-### Этам до настройки для работы сервиса Django 
+### Этап до настройки для работы сервиса Django 
 
 ```
 kubectl get pods -n django-app
 ```
-то увидите что STATUS не соответствует значению Running, так как сервису для работы требуется наличие БД PostgreSQL, давайте задеплоим ее:
+Если выполним команду то увидите что STATUS не соответствует значению Running, так как сервису для работы требуется наличие БД PostgreSQL, давайте задеплоим ее:
 Страница проекта: (https://artifacthub.io/packages/helm/bitnami/postgresql)
 На srv-0 выполните команду:
  
