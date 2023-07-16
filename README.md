@@ -144,7 +144,9 @@ kubectl get pods -n django-app
 Оба пода должны находиться в состоянии Running
 
 NAME                      READY   STATUS    RESTARTS   AGE
+
 my-release-postgresql-0   1/1     Running   0          24h
+
 myapp-6c464b69fd-x5vcq    1/1     Running   0          15h
 
 ## На этом этап Спринта 2  является завершенным. 
