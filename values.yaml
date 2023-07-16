@@ -1,0 +1,10 @@
+image:
+  repository: 4anchor/testapp
+  tag: "{{ .Values.image.tag }}"
+
+service:
+  port: 3003
+  type: NodePort
+
+ingress:
+  enabled: true
